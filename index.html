@@ -115,28 +115,7 @@
         <li>Alternative methods (ACH, BNPL) where supported by the gateway</li>
       </ul>
 
-      <h3>Integration Patterns</h3>
-      <p>Recommended approach to minimize PCI scope:</p>
-      <ol>
-        <li>Client requests ephemeral payment token / session from gateway SDK.</li>
-        <li>Client submits token to your server with order details.</li>
-        <li>Server validates order, reserves inventory, then calls gateway capture API.</li>
-        <li>On gateway webhook success, mark order as paid and finalize fulfillment.</li>
-      </ol>
 
-      <h3>Webhook Handling</h3>
-      <p>Configure webhook endpoints to receive payment status events (payment.succeeded, payment.failed, dispute.created). Validate signatures and implement idempotency using gateway event IDs.</p>
-
-      <h3>Sample server-side pseudo-request</h3>
-      <pre style="background:#f3f6fb;padding:8px;border-radius:4px;border:1px solid #e6eefc;">POST /api/payments/capture
-Headers: Authorization: Bearer {server_token}
-Body: {
-  "orderId": "ORD-1001",
-  "paymentToken": "tok_abc123",
-  "amount": 2599,
-  "currency": "USD"
-}
-</pre>
 
       <h3>Security & Compliance</h3>
       <ul>
@@ -162,48 +141,7 @@ Body: {
       <p>Admin features include product management, inventory adjustments, order management, returns processing, reports (sales, refunds, inventory turnover), and permissions/roles for staff users.</p>
     </section>
 
-    <section id="api-summary" style="margin-top:1rem;">
-      <h2>API Summary</h2>
-      <p>High-level endpoints (examples):</p>
-      <ul>
-        <li>GET /api/products — list products (filters: q, category, inStock)</li>
-        <li>GET /api/products/{sku} — product details</li>
-        <li>POST /api/cart — create/update cart</li>
-        <li>POST /api/checkout — create checkout session</li>
-        <li>POST /api/payments/capture — server-side capture</li>
-        <li>GET /api/orders/{orderId} — order status and tracking</li>
-        <li>POST /webhooks/payments — payment gateway events</li>
-      </ul>
-      <p>All write endpoints require authentication (Bearer token or session cookie). Use idempotency keys on order creation to avoid duplicates.</p>
-    </section>
 
-    <section id="webhooks" style="margin-top:1rem;">
-      <h2>Webhooks</h2>
-      <p>Register webhooks for payments, fulfillment status updates, and third-party inventory sync. Validate signatures and return 2xx quickly. Store raw event payloads for audit and retry processing on transient failures.</p>
-    </section>
-
-    <section id="data-models" style="margin-top:1rem;">
-      <h2>Data Models (brief)</h2>
-      <h4>Product (example)</h4>
-      <pre style="background:#f3f6fb;padding:8px;border-radius:4px;border:1px solid #e6eefc;">{
-  "sku": "SKU123",
-  "title": "Organic Bananas",
-  "price": 1.29,
-  "unit": "kg",
-  "inventory": { "available": 150, "reserved": 2 },
-  "images": ["..."],
-  "category": "Produce"
-}</pre>
-      <h4>Order (example)</h4>
-      <pre style="background:#f3f6fb;padding:8px;border-radius:4px;border:1px solid #e6eefc;">{
-  "orderId": "ORD-1001",
-  "customerId": "CUST001",
-  "items": [{ "sku":"SKU123","qty":2,"price":1.29 }],
-  "total": 2.58,
-  "status": "NEW",
-  "payment": { "method":"card","status":"pending" }
-}</pre>
-    </section>
 
     <section id="security" style="margin-top:1rem;">
       <h2>Security & Compliance</h2>
@@ -226,20 +164,7 @@ Body: {
       </ul>
     </section>
 
-    <section id="integration-links" style="margin-top:1rem;">
-      <h2>Integration Files</h2>
-      <p>Detailed integration guides and examples are in the integration folder:</p>
-      <ul>
-        <li><a class="inline" href="./integration/">Integration index</a></li>
-        <li><a class="inline" href="./integration/README.md">integration/README.md</a></li>
-        <li><a class="inline" href="./integration/upload-products.md">upload-products.md</a></li>
-        <li><a class="inline" href="./integration/upload-product-images.md">upload-product-images.md</a></li>
-        <li><a class="inline" href="./integration/receive-orders.md">receive-orders.md</a></li>
-        <li><a class="inline" href="./integration/send-orders.md">send-orders.md</a></li>
-        <li><a class="inline" href="./integration/upload-invoices.md">upload-invoices.md</a></li>
-      </ul>
-      <p>Use the Integration index for onboarding steps, API details, and sample payloads.</p>
-    </section>
+
 
     <section style="margin-top:1rem;">
       <h2>Getting Started — Quick Checklist</h2>
@@ -256,5 +181,90 @@ Body: {
   <footer>
     &copy; <!-- ...existing code... --> Zoom Market — Documentation
   </footer>
+
+  <!-- PJAX: keep header visible and replace only main content on internal navigation -->
+  <script>
+    (function () {
+      const containerSelector = '#main-content';
+
+      function isInternalAnchor(a) {
+        try {
+          const url = new URL(a.href, location.href);
+          return url.origin === location.origin && (!a.target || a.target !== '_blank') && !a.hasAttribute('download');
+        } catch (e) {
+          return false;
+        }
+      }
+
+      function swapMainFromHtml(html, url, push = true) {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const newMain = doc.querySelector(containerSelector) || doc.querySelector('main') || doc.body;
+        const curMain = document.querySelector(containerSelector);
+        if (!curMain || !newMain) return false;
+
+        // small transition
+        curMain.style.transition = 'opacity 140ms ease';
+        curMain.style.opacity = '0.5';
+        setTimeout(() => {
+          curMain.innerHTML = newMain.innerHTML;
+          document.title = doc.title || document.title;
+          if (push) history.pushState({ url: url }, '', url);
+          window.scrollTo(0, 0);
+          curMain.style.opacity = '';
+        }, 140);
+        return true;
+      }
+
+      // Intercept clicks on internal links
+      document.addEventListener('click', function (e) {
+        const a = e.target.closest && e.target.closest('a');
+        if (!a) return;
+        if (!isInternalAnchor(a)) return;
+
+        const href = a.getAttribute('href') || '';
+        // allow same-page anchors
+        if (href.startsWith('#') && (!a.pathname || a.pathname === location.pathname)) return;
+
+        // let browser handle mailto/tel/javascript
+        if (/^(mailto|tel|javascript):/i.test(href)) return;
+
+        e.preventDefault();
+        const fetchUrl = new URL(a.href, location.href).href;
+
+        fetch(fetchUrl, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+          .then(res => {
+            if (!res.ok) throw new Error('Network');
+            return res.text();
+          })
+          .then(html => {
+            const ok = swapMainFromHtml(html, fetchUrl, true);
+            if (!ok) location.href = fetchUrl;
+          })
+          .catch(() => {
+            // fallback to full navigation on error
+            location.href = fetchUrl;
+          });
+      });
+
+      // Handle back/forward
+      window.addEventListener('popstate', function (e) {
+        const url = (e.state && e.state.url) || location.href;
+        fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+          .then(res => {
+            if (!res.ok) throw new Error('Network');
+            return res.text();
+          })
+          .then(html => {
+            const ok = swapMainFromHtml(html, url, false);
+            if (!ok) location.href = url;
+          })
+          .catch(() => {
+            location.href = url;
+          });
+      });
+    })();
+  </script>
+
 </body>
 </html>

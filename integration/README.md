@@ -1,8 +1,8 @@
 # RetailProcessor API Documentation (Third‑Party Integration)
 
-This folder contains integration guides for the public APIs exposed by RetailProcessor. Each document includes endpoint details, required headers, sample requests (curl), example responses, and integration notes.
+This document contains integration guides for the public APIs exposed by RetailProcessor. Each document includes endpoint details, required headers, sample requests (curl), example responses, and integration notes.
 
-## Files in this folder
+## APIs
 
 - [Upload Products](./upload-products.md) — Instructions and sample payloads for uploading product data (CSV or JSON), field mappings, validation rules, and common errors.
 - [Upload Product Images](./upload-product-images.md) — Guide for uploading product images using multipart/form-data, naming conventions, and size/format requirements.

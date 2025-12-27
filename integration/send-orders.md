@@ -1,4 +1,3 @@
-
 # Send Orders
 
 Version: 1.0 | Last updated: 2025-11-01
@@ -12,6 +11,7 @@ Endpoint
 - Accept: application/json
 
 Authentication & headers
+
 | Header | Required | Description |
 |---|:---:|---|
 | Authorization | Yes | `Bearer <JWT>` |
@@ -55,6 +55,7 @@ Success response (200)
 ```
 
 Errors
+
 | HTTP | Reason |
 |---:|---|
 | 400 | Validation errors — missing required fields |

@@ -10,6 +10,7 @@ Endpoint
 - Accept: application/json
 
 Authentication & headers
+
 | Header | Required | Description |
 |---|:---:|---|
 | Authorization | Yes | `Bearer <JWT>` |
@@ -17,6 +18,7 @@ Authentication & headers
 | Accept | Recommended | `application/json` |
 
 Query parameters
+
 | Name | Required | Type | Description |
 |---|:---:|---|---|
 | since | No | timestamp | ISO‑8601 — return orders updated after this time |
@@ -64,6 +66,7 @@ Success response (200)
 ```
 
 Errors
+
 | HTTP | Reason |
 |---:|---|
 | 400 | Malformed parameter (e.g., timestamp) |

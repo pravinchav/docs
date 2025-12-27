@@ -15,6 +15,7 @@ Endpoint
 - Content-Type: multipart/form-data
 
 Authentication & headers
+
 | Header | Required | Description |
 |---|:---:|---|
 | Authorization | Yes | `Bearer <JWT>` |
@@ -22,6 +23,7 @@ Authentication & headers
 | Accept | Recommended | `application/json` |
 
 Form fields
+
 | Field | Required | Type | Description |
 |---|:---:|---|---|
 | invoices | Yes | file[] | One or more PDF files |
@@ -54,6 +56,7 @@ Success response (200)
 ```
 
 Errors
+
 | HTTP | Reason |
 |---:|---|
 | 400 | No files or non-PDF content |

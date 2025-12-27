@@ -15,6 +15,7 @@ Endpoint
 - Content-Type: multipart/form-data
 
 Authentication & headers
+
 | Header | Required | Description |
 |---|:---:|---|
 | Authorization | Yes | `Bearer <JWT>` |
@@ -22,6 +23,7 @@ Authentication & headers
 | Accept | Recommended | `application/json` |
 
 Form fields
+
 | Field | Required | Type | Description |
 |---|:---:|---|---|
 | images | Yes | file[] | Image files (JPEG/PNG) |
@@ -47,6 +49,7 @@ Success response (200)
 ```
 
 Errors & tips
+
 | HTTP | Reason / Recommendation |
 |---:|---|
 | 400 | No images or invalid mapping — ensure JSON mapping matches filenames |

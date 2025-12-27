@@ -15,6 +15,7 @@ Endpoint
 - Content-Type: multipart/form-data
 
 Authentication & headers
+
 | Header | Required | Description |
 |---|:---:|---|
 | Authorization | Yes | `Bearer <JWT>` |
@@ -22,6 +23,7 @@ Authentication & headers
 | Accept | Recommended | `application/json` |
 
 Form fields
+
 | Field | Required | Type | Description |
 |---|:---:|---|---|
 | file | Yes | file | Product data (CSV or JSON) |
@@ -57,6 +59,7 @@ Success response (200)
 ```
 
 Errors
+
 | HTTP | Reason |
 |---:|---|
 | 400 | Missing file or invalid format |

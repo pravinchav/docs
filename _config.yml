@@ -1,0 +1,19 @@
+title: "Zoom Market Documentation"
+    url: "/integration/index.html"
+  - title: "Integration"
+    url: "/installation/index.html"
+  - title: "Installation"
+    url: "/index.html"
+  - title: "Home"
+nav_links:
+# site-wide navigation used by the layout
+
+  - Gemfile.lock
+exclude:
+permalink: /:path/
+markdown: kramdown
+theme: minima
+url: ""           # set to site URL for production, e.g. https://example.com
+baseurl: ""       # change if served from a subpath
+description: "Documentation for the Zoom Market grocery application"
+

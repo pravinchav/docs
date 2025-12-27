@@ -82,21 +82,6 @@ Instrumented events: `cart.add`, `cart.update`, `checkout.start`, `checkout.comp
 3. Server validates order, reserves inventory, calls gateway capture API.
 4. On gateway webhook success, mark order paid and finalize fulfillment.
 
-### Webhook Handling
-Configure webhook endpoints for payment events (`payment.succeeded`, `payment.failed`, `dispute.created`). Validate signatures and implement idempotency with gateway event IDs.
-
-### Sample server-side pseudo-request
-```http
-POST /api/payments/capture
-Headers: Authorization: Bearer {server_token}
-Body:
-{
-  "orderId": "ORD-1001",
-  "paymentToken": "tok_abc123",
-  "amount": 2599,
-  "currency": "USD"
-}
-```
 
 ### Security & Compliance
 - Never store raw card data; use gateway tokens or vault.
@@ -116,50 +101,6 @@ Features: registration/login (email/password, OAuth), address book, saved paymen
 
 Admin capabilities include product management, inventory adjustments, order management, returns processing, reports (sales, refunds, inventory turnover), and staff permissions/roles.
 
-## API Summary
-
-High-level endpoints (examples):
-
-- `GET /api/products` — list products (filters: q, category, inStock)
-- `GET /api/products/{sku}` — product details
-- `POST /api/cart` — create/update cart
-- `POST /api/checkout` — create checkout session
-- `POST /api/payments/capture` — server-side capture
-- `GET /api/orders/{orderId}` — order status & tracking
-- `POST /webhooks/payments` — payment gateway events
-
-All write endpoints require authentication (Bearer token or session cookie). Use idempotency keys on order creation to prevent duplicates.
-
-## Webhooks
-
-Register webhooks for payments, fulfillment updates, and third-party inventory sync. Validate signatures, respond quickly with 2xx, store raw event payloads for audit, and retry processing on transient failures.
-
-## Data Models (brief)
-
-**Product (example)**
-```json
-{
-  "sku": "SKU123",
-  "title": "Organic Bananas",
-  "price": 1.29,
-  "unit": "kg",
-  "inventory": { "available": 150, "reserved": 2 },
-  "images": ["..."],
-  "category": "Produce"
-}
-```
-
-**Order (example)**
-```json
-{
-  "orderId": "ORD-1001",
-  "customerId": "CUST001",
-  "items": [{ "sku":"SKU123","qty":2,"price":1.29 }],
-  "total": 2.58,
-  "status": "NEW",
-  "payment": { "method":"card","status":"pending" }
-}
-```
 
 ## Security & Compliance
 
@@ -177,18 +118,6 @@ Recommendations:
 - Test failure modes: payment declines, webhook retries, inventory race conditions.
 - Monitor metrics: order rate, cart abandonment, payment failures, latency.
 
-## Integration Files
-
-Detailed integration guides and examples live in the `integration` folder:
-
-- [Integration index](./integration/)
-- [integration/README.md](./integration/README.md)
-- [upload-products.md](./integration/upload-products.md)
-- [upload-product-images.md](./integration/upload-product-images.md)
-- [receive-orders.md](./integration/receive-orders.md)
-- [send-orders.md](./integration/send-orders.md)
-- [upload-invoices.md](./integration/upload-invoices.md)
-
 ## Getting Started — Quick Checklist
 
 1. Clone the repository and open this documentation.
@@ -198,5 +127,3 @@ Detailed integration guides and examples live in the `integration` folder:
 5. Run an end-to-end test order through checkout and verify fulfillment.
 
 ---
-
-*End of document.*

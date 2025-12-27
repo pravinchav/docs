@@ -1,7 +1,3 @@
----
-layout: default
-title: My Page Title
----
 
 # RetailProcessor API Documentation (Third‑Party Integration)
 

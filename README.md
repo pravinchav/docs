@@ -1,3 +1,7 @@
+---
+layout: default
+title: My Page Title
+---
 
 # RetailProcessor API Documentation (Third‑Party Integration)
 
@@ -17,6 +21,7 @@ Integration notes
 - For downloads, the API returns Content-Type: application/pdf and Content-Disposition: attachment.
 
 If you need a machine-readable OpenAPI (Swagger) file, request it from the API owner.
+
 
 
 

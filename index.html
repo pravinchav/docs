@@ -1,6 +1,153 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Welcome — Project Documentation</title>
+  <meta name="description" content="Official documentation and integration guide for the project." />
+  <style>
+    /* Minimal, professional styling */
+    :root { font-family: Arial, Helvetica, sans-serif; color: #222; }
+    body { margin: 0; line-height: 1.5; background: #f7f9fb; }
+    header { background: #0b5fff; color: #fff; padding: 1.25rem 1rem; }
+    .container { max-width: 980px; margin: 1.5rem auto; padding: 0 1rem; }
+    nav a { color: #fff; text-decoration: none; margin-right: 1rem; font-weight: 600; }
+    main { background: #fff; border-radius: 8px; padding: 1.25rem; box-shadow: 0 8px 20px rgba(20,30,50,0.06); }
+    h1 { margin: 0 0 0.25rem 0; font-size: 1.6rem; }
+    p.lead { margin: 0 0 1rem 0; color: #4a5568; }
+    .grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); }
+    .card { padding: 1rem; border-radius: 6px; background: #fbfdff; border: 1px solid #e6eefc; }
+    footer { margin-top: 1rem; color: #6b7280; font-size: 0.9rem; text-align: center; padding: 1rem 0; }
+    a.inline { color: #0b5fff; text-decoration: none; }
+  </style>
+</head>
 <body>
-    <h1>Hello World! My GitHub Page is live.</h1>
+  <header>
+    <div class="container" style="display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <strong style="font-size:1.1rem">Project Name</strong>
+        <div style="font-size:0.85rem;color:rgba(255,255,255,0.9);">Documentation & Integration</div>
+      </div>
+      <nav aria-label="Main navigation">
+        <a href="./" aria-current="page">Home</a>
+        <a href="./integration/">Integration</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section>
+      <h1>Welcome to the Project Documentation</h1>
+      <p class="lead">This site contains official guides, reference material, and integration instructions to help you quickly adopt and extend the project in production environments.</p>
+    </section>
+
+    <section style="margin-top:1rem;">
+      <div class="grid">
+        <div class="card">
+          <h3>Overview</h3>
+          <p>Concise product overview, goals, and intended audience. Clear, curated documentation to reduce integration time and support operational stability.</p>
+        </div>
+        <div class="card">
+          <h3>Key Features</h3>
+          <ul style="margin:0;padding-left:1.25rem">
+            <li>Reliable API surface</li>
+            <li>Extensible integration points</li>
+            <li>Production-focused examples</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Support</h3>
+          <p>For questions, file an issue in the repository or consult the integration guides linked below.</p>
+        </div>
+      </div>
+    </section>
+
+    <section style="margin-top:1rem;">
+      <h2>Quick links — Integration</h2>
+      <p>Start here to integrate the project into your environment.</p>
+
+      <!-- Replaced static list with a dynamic detector that links files present in ./integration/ -->
+      <div id="integration-links" aria-live="polite">
+        <ul id="integration-list">
+          <li>Detecting integration files…</li>
+        </ul>
+        <p id="integration-note" style="display:none;color:#6b7280;font-size:0.9rem;">
+          If no links appear, create an index or README inside the integration folder to provide onboarding steps and examples.
+        </p>
+      </div>
+
+      <script>
+        (function () {
+          const base = './integration/';
+          const expectedFiles = [
+            'index.html',
+            'setup.md',
+            'examples.md',
+            'api.md',
+            'quickstart.md',
+            'reference.md',
+            'README.md'
+          ];
+          const listEl = document.getElementById('integration-list');
+          const noteEl = document.getElementById('integration-note');
+          let found = 0;
+          let pending = expectedFiles.length;
+
+          // Clear placeholder
+          listEl.innerHTML = '';
+
+          expectedFiles.forEach(function (name) {
+            const url = base + name;
+            // Try HEAD first for efficiency; fall back to GET if HEAD is blocked
+            fetch(url, { method: 'HEAD' }).then(function (res) {
+              if (res.ok) addLink(url, name);
+            }).catch(function () {
+              // HEAD may be blocked on some static hosts — try GET
+              fetch(url, { method: 'GET' }).then(function (res2) {
+                if (res2.ok) addLink(url, name);
+              }).catch(function () {
+                // ignore missing files
+              }).finally(done);
+              return;
+            }).finally(done);
+
+            function done() {
+              pending--;
+              if (pending === 0 && found === 0) {
+                listEl.innerHTML = '<li>No integration files detected. Create an index or README in the integration folder.</li>';
+                noteEl.style.display = 'block';
+              }
+            }
+
+            function addLink(url, name) {
+              const li = document.createElement('li');
+              const a = document.createElement('a');
+              a.href = url;
+              a.textContent = name;
+              a.className = 'inline';
+              li.appendChild(a);
+              listEl.appendChild(li);
+              found++;
+            }
+          });
+        })();
+      </script>
+
+      <!-- ...existing code... -->
+    </section>
+
+    <section style="margin-top:1rem;">
+      <h2>Getting started</h2>
+      <ol>
+        <li>Clone the repository and open this documentation site.</li>
+        <li>Visit the Integration index to follow setup and configuration steps: <a href="./integration/">./integration/</a></li>
+        <li>Follow examples and verify locally before deploying to production.</li>
+      </ol>
+    </section>
+  </main>
+
+  <footer>
+    &copy; <!-- ...existing code... --> Project Name — Documentation
+  </footer>
 </body>
 </html>

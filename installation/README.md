@@ -1,20 +1,37 @@
-# RetailProcessor API Documentation (Third‑Party Integration)
+# Application setup
 
-This folder contains installation guides.
+## Database Installation
+- Install postgress
+- Create databse with name `app_db`
+- Download the initial schema and seed script: [day_00_script.sql](./day_00_script.sql) — click to download.
+- Run script against 'app_db'
 
-## Files in this folder
+## Application Installation
 
-- [Upload Products](./upload-products.md) — Instructions and sample payloads for uploading product data (CSV or JSON), field mappings, validation rules, and common errors.
-- [Upload Product Images](./upload-product-images.md) — Guide for uploading product images using multipart/form-data, naming conventions, and size/format requirements.
-- [Receive Orders](./Setup) — Details on pulling orders from RetailProcessor (GET endpoints), pagination, filters, and sample responses.
-- [Send Orders](./send-orders.md) — Steps and examples for pushing orders into RetailProcessor (POST), required headers, idempotency notes, and error handling.
-- [Send Invoices](./upload-invoices.md) — How to upload invoice PDF files (multipart), expected metadata, and downstream processing behavior.
+### Software
 
-Integration notes
+This application needs below software and provided under C:\OnlineApp\installer. Install these software with default instructions.
 
-- All requests require authentication. Include an Authorization header with a bearer token (or as specified by your agreement).
-- Many endpoints expect an encrypted company key header (named `key`) — see each doc for details.
-- For file uploads, use multipart/form-data with proper Content-Type boundaries.
-- For downloads, the API returns Content-Type: application/pdf and Content-Disposition: attachment.
+Install Java version 17
+- Run **jdk-17_windows-x64_bin.exe**
+- to check installation run command **java -version**
 
-If you need a machine-readable OpenAPI (Swagger) file, request it from the API owner.
+Install Node version 22
+- Run node-v22.8.0-x64.msi
+- To check installation run command **node --version**
+
+Copy application files
+- Copy all files to <Application root> folder. e.g. C:\OnlineApp
+- create a folder `invoices` under application root folder e.g. C:\OnlineApp\invoices
+- Update root folder in `application.yml` with <Application root> under \server\processor\config
+
+Start Application
+- Open command prompt and go to application root folder e.g. C:\OnlineApp
+- Run command  `start-application.bat`
+- Open browser and go to URL `http://<server-host>:9001`
+
+Start Application
+- Open command prompt and go to application root folder e.g. C:\OnlineApp
+- Run command  `stop-application.bat`
+
+

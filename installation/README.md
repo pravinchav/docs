@@ -1,6 +1,6 @@
 
 
-# Application setup
+### Application setup
 This document explains how to prepare the environment and install the application. It covers database setup (creating the `ims` and applying the initial schema), required software (Java 17 and Node 22), copying application files, creating the invoices folder, and starting/stopping the application. Use the quick verification tests below to validate key steps after installation.
 
 ## Database Installation

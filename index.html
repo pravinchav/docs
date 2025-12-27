@@ -36,7 +36,8 @@
     </div>
   </header>
 
-  <main class="container">
+  <!-- Replace the main tag to add an id for PJAX replacements -->
+  <main id="main-content" class="container">
     <section>
       <h1>Welcome to the Project Documentation</h1>
       <p class="lead">This site contains official guides, reference material, and integration instructions to help you quickly adopt and extend the project in production environments.</p>
@@ -78,7 +79,8 @@
       </div>
 
       <script>
-        (function () {
+        // Integration links detector (can be re-run after PJAX swaps)
+        function initIntegrationLinks() {
           const base = './integration/';
           const expectedFiles = [
             'index.html',
@@ -91,23 +93,22 @@
           ];
           const listEl = document.getElementById('integration-list');
           const noteEl = document.getElementById('integration-note');
+          if (!listEl) return;
           let found = 0;
           let pending = expectedFiles.length;
 
-          // Clear placeholder
-          listEl.innerHTML = '';
+          listEl.innerHTML = '<li>Detecting integration files…</li>';
+          noteEl && (noteEl.style.display = 'none');
 
           expectedFiles.forEach(function (name) {
             const url = base + name;
-            // Try HEAD first for efficiency; fall back to GET if HEAD is blocked
             fetch(url, { method: 'HEAD' }).then(function (res) {
               if (res.ok) addLink(url, name);
             }).catch(function () {
-              // HEAD may be blocked on some static hosts — try GET
               fetch(url, { method: 'GET' }).then(function (res2) {
                 if (res2.ok) addLink(url, name);
               }).catch(function () {
-                // ignore missing files
+                // ignore
               }).finally(done);
               return;
             }).finally(done);
@@ -116,7 +117,7 @@
               pending--;
               if (pending === 0 && found === 0) {
                 listEl.innerHTML = '<li>No integration files detected. Create an index or README in the integration folder.</li>';
-                noteEl.style.display = 'block';
+                noteEl && (noteEl.style.display = 'block');
               }
             }
 
@@ -131,10 +132,93 @@
               found++;
             }
           });
+        }
+
+        // PJAX/navigation: keep header persistent and replace only main content
+        (function () {
+          const containerSelector = '#main-content';
+
+          // Utility: determine if a link is internal and should be handled
+          function isInternalLink(a) {
+            try {
+              const url = new URL(a.href, location.href);
+              return url.origin === location.origin && !a.hasAttribute('download') && a.target !== '_blank';
+            } catch (e) {
+              return false;
+            }
+          }
+
+          // Replace main content with fetched document's main
+          function swapContent(html, url, replaceState = true) {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const newMain = doc.querySelector(containerSelector) || doc.querySelector('main') || doc.body;
+            const curMain = document.querySelector(containerSelector);
+            if (!curMain || !newMain) return;
+            // Optional: small fade
+            curMain.style.opacity = '0.6';
+            setTimeout(() => {
+              curMain.innerHTML = newMain.innerHTML;
+              document.title = doc.title || document.title;
+              if (replaceState) history.pushState({ url: url }, '', url);
+              window.scrollTo(0, 0);
+              // re-run init hooks for dynamic parts
+              setTimeout(() => {
+                initIntegrationLinks();
+                curMain.style.opacity = '';
+              }, 50);
+            }, 120);
+          }
+
+          // Intercept clicks
+          document.addEventListener('click', function (e) {
+            const a = e.target.closest && e.target.closest('a');
+            if (!a) return;
+            if (!isInternalLink(a)) return;
+            // Only handle same-directory / relative links and HTML/MD resources
+            const href = a.getAttribute('href') || '';
+            if (href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('javascript:')) return;
+            // Allow anchors within same page to behave normally
+            if (href.startsWith('#') && (!a.pathname || a.pathname === location.pathname)) return;
+
+            e.preventDefault();
+            const fetchUrl = new URL(a.href, location.href).href;
+            fetch(fetchUrl, { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(function (res) {
+              if (!res.ok) {
+                // fallback to full navigation on error
+                location.href = fetchUrl;
+                return;
+              }
+              return res.text();
+            }).then(function (html) {
+              if (html) swapContent(html, fetchUrl, true);
+            }).catch(function () {
+              location.href = fetchUrl;
+            });
+          }, false);
+
+          // Handle back/forward
+          window.addEventListener('popstate', function (e) {
+            const url = (e.state && e.state.url) || location.href;
+            fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(function (res) {
+              if (!res.ok) {
+                location.href = url;
+                return;
+              }
+              return res.text();
+            }).then(function (html) {
+              if (html) swapContent(html, url, false);
+            }).catch(function () {
+              location.href = url;
+            });
+          });
+
+          // Initialize on first load
+          document.addEventListener('DOMContentLoaded', function () {
+            initIntegrationLinks();
+          });
         })();
       </script>
-
-      <!-- ...existing code... -->
     </section>
 
     <section style="margin-top:1rem;">

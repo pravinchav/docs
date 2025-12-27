@@ -1,3 +1,8 @@
+---
+layout: default
+title: My Page Title
+---
+
 # RetailProcessor API Documentation (Third‑Party Integration)
 
 This folder contains integration guides for the public APIs exposed by RetailProcessor. Each document includes endpoint details, required headers, sample requests (curl), example responses, and integration notes.

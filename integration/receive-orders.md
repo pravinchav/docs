@@ -1,3 +1,8 @@
+---
+layout: default
+title: My Page Title
+---
+
 # Receive Orders
 
 Version: 1.0 | Last updated: 2025-11-01

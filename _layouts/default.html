@@ -10,10 +10,10 @@
   <body>
     <header class="site-header">
       <div class="container">
-        <div class="brand">
-          <a href="{{ '/' | relative_url }}">{{ site.title }}</a>
-          <span class="tagline">{{ site.description }}</span>
-        </div>
+<!--        <div class="brand">-->
+<!--          <a href="{{ '/' | relative_url }}">{{ site.title }}</a>-->
+<!--          <span class="tagline">{{ site.description }}</span>-->
+<!--        </div>-->
         <nav class="main-nav" aria-label="Main navigation">
           {% for item in site.nav_links %}
             <a href="{{ item.url | relative_url }}">{{ item.title }}</a>{% unless forloop.last %} · {% endunless %}

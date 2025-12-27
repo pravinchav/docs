@@ -1,8 +1,13 @@
----
-layout: default
 title: "Zoom Market Documentation"
+description: "Documentation for the Zoom Market grocery application"
 theme: minima
-permalink: /
+url: ""           # set to site URL for production, e.g. https://example.com
+baseurl: ""       # change if served from a subpath
+permalink: /:path/
+markdown: kramdown
+exclude:
+  - Gemfile.lock
+
 nav_links:
   - title: Home
     url: /index.html
@@ -10,16 +15,3 @@ nav_links:
     url: /installation/index.html
   - title: Integration
     url: /integration/index.html
----
-nav_links:
-# site-wide navigation used by the layout
-
-  - Gemfile.lock
-exclude:
-permalink: /:path/
-markdown: kramdown
-theme: minima
-url: ""           # set to site URL for production, e.g. https://example.com
-baseurl: ""       # change if served from a subpath
-description: "Documentation for the Zoom Market grocery application"
-

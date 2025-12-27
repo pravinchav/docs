@@ -1,16 +1,4 @@
----
-layout: default
-title: "Zoom Market Documentation"
-theme: minima
-permalink: /
-nav_links:
-  - title: Home
-    url: /index.html
-  - title: Installation
-    url: /installation/index.html
-  - title: Integration
-    url: /integration/index.html
----
+
 
 # Zoom Market — Documentation
 

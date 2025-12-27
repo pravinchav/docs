@@ -1,6 +1,16 @@
-title: Zoom Market Documentation
-author: Zoom Market Team
-language: en
+---
+layout: default
+title: "Zoom Market Documentation"
+theme: minima
+permalink: /
+nav_links:
+  - title: Home
+    url: /index.html
+  - title: Installation
+    url: /installation/index.html
+  - title: Integration
+    url: /integration/index.html
+---
 nav_links:
 # site-wide navigation used by the layout
 

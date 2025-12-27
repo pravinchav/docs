@@ -39,194 +39,216 @@
   <!-- Replace the main tag to add an id for PJAX replacements -->
   <main id="main-content" class="container">
     <section>
-      <h1>Welcome to the Project Documentation</h1>
-      <p class="lead">This site contains official guides, reference material, and integration instructions to help you quickly adopt and extend the project in production environments.</p>
+      <h1>Zoom Market — Grocery App Documentation</h1>
+      <p class="lead">Comprehensive documentation for the Zoom Market grocery application: storefront features, checkout flow, payment gateway integration, APIs, admin tools, and operational guidance for developers and integrators.</p>
     </section>
 
     <section style="margin-top:1rem;">
-      <div class="grid">
-        <div class="card">
-          <h3>Overview</h3>
-          <p>Concise product overview, goals, and intended audience. Clear, curated documentation to reduce integration time and support operational stability.</p>
-        </div>
-        <div class="card">
-          <h3>Key Features</h3>
-          <ul style="margin:0;padding-left:1.25rem">
-            <li>Reliable API surface</li>
-            <li>Extensible integration points</li>
-            <li>Production-focused examples</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>Support</h3>
-          <p>For questions, file an issue in the repository or consult the integration guides linked below.</p>
-        </div>
-      </div>
+      <h2>Table of Contents</h2>
+      <ul>
+        <li><a class="inline" href="#overview">Overview</a></li>
+        <li><a class="inline" href="#user-journeys">User Journeys</a></li>
+        <li><a class="inline" href="#catalog-inventory">Catalog & Inventory</a></li>
+        <li><a class="inline" href="#cart-checkout">Cart & Checkout</a></li>
+        <li><a class="inline" href="#payments">Payments & Gateway Integration</a></li>
+        <li><a class="inline" href="#orders-fulfillment">Orders & Fulfillment</a></li>
+        <li><a class="inline" href="#accounts">Accounts & Profiles</a></li>
+        <li><a class="inline" href="#admin-reporting">Admin & Reporting</a></li>
+        <li><a class="inline" href="#api-summary">API Summary</a></li>
+        <li><a class="inline" href="#security">Security & Compliance</a></li>
+        <li><a class="inline" href="#deployment-testing">Deployment & Testing</a></li>
+        <li><a class="inline" href="#integration-links">Integration Files</a></li>
+      </ul>
     </section>
 
-    <section style="margin-top:1rem;">
-      <h2>Quick links — Integration</h2>
-      <p>Start here to integrate the project into your environment.</p>
-
-      <!-- Replaced static list with a dynamic detector that links files present in ./integration/ -->
-      <div id="integration-links" aria-live="polite">
-        <ul id="integration-list">
-          <li>Detecting integration files…</li>
-        </ul>
-        <p id="integration-note" style="display:none;color:#6b7280;font-size:0.9rem;">
-          If no links appear, create an index or README inside the integration folder to provide onboarding steps and examples.
-        </p>
-      </div>
-
-      <script>
-        // Integration links detector (can be re-run after PJAX swaps)
-        function initIntegrationLinks() {
-          const base = './integration/';
-          const expectedFiles = [
-            'index.html',
-            'setup.md',
-            'examples.md',
-            'api.md',
-            'quickstart.md',
-            'reference.md',
-            'README.md'
-          ];
-          const listEl = document.getElementById('integration-list');
-          const noteEl = document.getElementById('integration-note');
-          if (!listEl) return;
-          let found = 0;
-          let pending = expectedFiles.length;
-
-          listEl.innerHTML = '<li>Detecting integration files…</li>';
-          noteEl && (noteEl.style.display = 'none');
-
-          expectedFiles.forEach(function (name) {
-            const url = base + name;
-            fetch(url, { method: 'HEAD' }).then(function (res) {
-              if (res.ok) addLink(url, name);
-            }).catch(function () {
-              fetch(url, { method: 'GET' }).then(function (res2) {
-                if (res2.ok) addLink(url, name);
-              }).catch(function () {
-                // ignore
-              }).finally(done);
-              return;
-            }).finally(done);
-
-            function done() {
-              pending--;
-              if (pending === 0 && found === 0) {
-                listEl.innerHTML = '<li>No integration files detected. Create an index or README in the integration folder.</li>';
-                noteEl && (noteEl.style.display = 'block');
-              }
-            }
-
-            function addLink(url, name) {
-              const li = document.createElement('li');
-              const a = document.createElement('a');
-              a.href = url;
-              a.textContent = name;
-              a.className = 'inline';
-              li.appendChild(a);
-              listEl.appendChild(li);
-              found++;
-            }
-          });
-        }
-
-        // PJAX/navigation: keep header persistent and replace only main content
-        (function () {
-          const containerSelector = '#main-content';
-
-          // Utility: determine if a link is internal and should be handled
-          function isInternalLink(a) {
-            try {
-              const url = new URL(a.href, location.href);
-              return url.origin === location.origin && !a.hasAttribute('download') && a.target !== '_blank';
-            } catch (e) {
-              return false;
-            }
-          }
-
-          // Replace main content with fetched document's main
-          function swapContent(html, url, replaceState = true) {
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(html, 'text/html');
-            const newMain = doc.querySelector(containerSelector) || doc.querySelector('main') || doc.body;
-            const curMain = document.querySelector(containerSelector);
-            if (!curMain || !newMain) return;
-            // Optional: small fade
-            curMain.style.opacity = '0.6';
-            setTimeout(() => {
-              curMain.innerHTML = newMain.innerHTML;
-              document.title = doc.title || document.title;
-              if (replaceState) history.pushState({ url: url }, '', url);
-              window.scrollTo(0, 0);
-              // re-run init hooks for dynamic parts
-              setTimeout(() => {
-                initIntegrationLinks();
-                curMain.style.opacity = '';
-              }, 50);
-            }, 120);
-          }
-
-          // Intercept clicks
-          document.addEventListener('click', function (e) {
-            const a = e.target.closest && e.target.closest('a');
-            if (!a) return;
-            if (!isInternalLink(a)) return;
-            // Only handle same-directory / relative links and HTML/MD resources
-            const href = a.getAttribute('href') || '';
-            if (href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('javascript:')) return;
-            // Allow anchors within same page to behave normally
-            if (href.startsWith('#') && (!a.pathname || a.pathname === location.pathname)) return;
-
-            e.preventDefault();
-            const fetchUrl = new URL(a.href, location.href).href;
-            fetch(fetchUrl, { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(function (res) {
-              if (!res.ok) {
-                // fallback to full navigation on error
-                location.href = fetchUrl;
-                return;
-              }
-              return res.text();
-            }).then(function (html) {
-              if (html) swapContent(html, fetchUrl, true);
-            }).catch(function () {
-              location.href = fetchUrl;
-            });
-          }, false);
-
-          // Handle back/forward
-          window.addEventListener('popstate', function (e) {
-            const url = (e.state && e.state.url) || location.href;
-            fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(function (res) {
-              if (!res.ok) {
-                location.href = url;
-                return;
-              }
-              return res.text();
-            }).then(function (html) {
-              if (html) swapContent(html, url, false);
-            }).catch(function () {
-              location.href = url;
-            });
-          });
-
-          // Initialize on first load
-          document.addEventListener('DOMContentLoaded', function () {
-            initIntegrationLinks();
-          });
-        })();
-      </script>
+    <section id="overview" style="margin-top:1rem;">
+      <h2>Overview</h2>
+      <p>Zoom Market is a full-featured grocery storefront offering browsing, search, cart, checkout, payment processing, order tracking, returns, and administrative tools. This document describes end-user flows, integration points for payments and third-party systems, and developer-facing APIs and webhooks.</p>
     </section>
 
-    <section style="margin-top:1rem;">
-      <h2>Getting started</h2>
+    <section id="user-journeys" style="margin-top:1rem;">
+      <h2>User Journeys</h2>
+      <h3>Browse & Search</h3>
+      <p>Users navigate categories, use faceted search, sort results, and view product listings with availability and price. Search supports keyword, category, brand, and tag filters.</p>
+
+      <h3>Product Details</h3>
+      <p>Each product page shows images, descriptions, nutrition info, price, inventory status, seller info, and recommended substitutions. Variant handling supports weight, pack size, and unit conversions.</p>
+
+      <h3>Cart</h3>
+      <p>Users add/edit/remove items, change quantities, view line-item pricing, promotions, subtotals, taxes, and shipping estimates. Cart persists for authenticated users and optionally via cookie/session for guests.</p>
+
+      <h3>Checkout</h3>
+      <p>Checkout collects shipping address, delivery/pickup options, payment method, and order confirmation. Checkout validates inventory in real-time and reserves stock during payment processing.</p>
+    </section>
+
+    <section id="catalog-inventory" style="margin-top:1rem;">
+      <h2>Catalog & Inventory</h2>
+      <p>Key catalog capabilities:</p>
+      <ul>
+        <li>Hierarchical categories and tags</li>
+        <li>Bulk product import (CSV/JSON) and image uploads</li>
+        <li>Inventory tracking with available/reserved/committed quantities</li>
+        <li>Per-location stock and fulfillment lead times</li>
+      </ul>
+    </section>
+
+    <section id="cart-checkout" style="margin-top:1rem;">
+      <h2>Cart & Checkout Details</h2>
+      <p>Checkout flow summary:</p>
       <ol>
-        <li>Clone the repository and open this documentation site.</li>
-        <li>Visit the Integration index to follow setup and configuration steps: <a href="./integration/">./integration/</a></li>
-        <li>Follow examples and verify locally before deploying to production.</li>
+        <li>Review cart → apply coupons / loyalty</li>
+        <li>Collect address & choose fulfillment method (delivery/pickup)</li>
+        <li>Calculate shipping, taxes, and final total</li>
+        <li>Select payment method and submit payment</li>
+        <li>Receive order confirmation and tracking</li>
+      </ol>
+      <p>Cart and checkout events to instrument: cart.add, cart.update, checkout.start, checkout.complete, payment.success, payment.failed.</p>
+    </section>
+
+    <section id="payments" style="margin-top:1rem;">
+      <h2>Payments & Gateway Integration</h2>
+      <h3>Supported Flows</h3>
+      <ul>
+        <li>Card payments (tokenization + server-side capture)</li>
+        <li>Digital wallets (Apple Pay / Google Pay) via gateway</li>
+        <li>Saved cards and PCI‑scope-reduction via client-side tokenization</li>
+        <li>Alternative methods (ACH, BNPL) where supported by the gateway</li>
+      </ul>
+
+      <h3>Integration Patterns</h3>
+      <p>Recommended approach to minimize PCI scope:</p>
+      <ol>
+        <li>Client requests ephemeral payment token / session from gateway SDK.</li>
+        <li>Client submits token to your server with order details.</li>
+        <li>Server validates order, reserves inventory, then calls gateway capture API.</li>
+        <li>On gateway webhook success, mark order as paid and finalize fulfillment.</li>
+      </ol>
+
+      <h3>Webhook Handling</h3>
+      <p>Configure webhook endpoints to receive payment status events (payment.succeeded, payment.failed, dispute.created). Validate signatures and implement idempotency using gateway event IDs.</p>
+
+      <h3>Sample server-side pseudo-request</h3>
+      <pre style="background:#f3f6fb;padding:8px;border-radius:4px;border:1px solid #e6eefc;">POST /api/payments/capture
+Headers: Authorization: Bearer {server_token}
+Body: {
+  "orderId": "ORD-1001",
+  "paymentToken": "tok_abc123",
+  "amount": 2599,
+  "currency": "USD"
+}
+</pre>
+
+      <h3>Security & Compliance</h3>
+      <ul>
+        <li>Never store raw card data. Use gateway tokens or vault.</li>
+        <li>Use HTTPS and HSTS for all endpoints.</li>
+        <li>Sign and verify webhooks; rotate secrets periodically.</li>
+        <li>Follow PCI DSS guidance; prefer hosted fields or gateway SDKs.</li>
+      </ul>
+    </section>
+
+    <section id="orders-fulfillment" style="margin-top:1rem;">
+      <h2>Orders & Fulfillment</h2>
+      <p>Order lifecycle: NEW → PROCESSING → PICKED → SHIPPED/OUT_FOR_DELIVERY → DELIVERED → RETURNED/REFUNDED. Provide tracking numbers and allow partial shipments. Support cancellations and refunds with financial reconciliation against payment gateway data.</p>
+    </section>
+
+    <section id="accounts" style="margin-top:1rem;">
+      <h2>Accounts & Profiles</h2>
+      <p>Features: registration/login (email/password, OAuth), address book, saved payments (tokens), order history, loyalty points, notifications preferences.</p>
+    </section>
+
+    <section id="admin-reporting" style="margin-top:1rem;">
+      <h2>Admin & Reporting</h2>
+      <p>Admin features include product management, inventory adjustments, order management, returns processing, reports (sales, refunds, inventory turnover), and permissions/roles for staff users.</p>
+    </section>
+
+    <section id="api-summary" style="margin-top:1rem;">
+      <h2>API Summary</h2>
+      <p>High-level endpoints (examples):</p>
+      <ul>
+        <li>GET /api/products — list products (filters: q, category, inStock)</li>
+        <li>GET /api/products/{sku} — product details</li>
+        <li>POST /api/cart — create/update cart</li>
+        <li>POST /api/checkout — create checkout session</li>
+        <li>POST /api/payments/capture — server-side capture</li>
+        <li>GET /api/orders/{orderId} — order status and tracking</li>
+        <li>POST /webhooks/payments — payment gateway events</li>
+      </ul>
+      <p>All write endpoints require authentication (Bearer token or session cookie). Use idempotency keys on order creation to avoid duplicates.</p>
+    </section>
+
+    <section id="webhooks" style="margin-top:1rem;">
+      <h2>Webhooks</h2>
+      <p>Register webhooks for payments, fulfillment status updates, and third-party inventory sync. Validate signatures and return 2xx quickly. Store raw event payloads for audit and retry processing on transient failures.</p>
+    </section>
+
+    <section id="data-models" style="margin-top:1rem;">
+      <h2>Data Models (brief)</h2>
+      <h4>Product (example)</h4>
+      <pre style="background:#f3f6fb;padding:8px;border-radius:4px;border:1px solid #e6eefc;">{
+  "sku": "SKU123",
+  "title": "Organic Bananas",
+  "price": 1.29,
+  "unit": "kg",
+  "inventory": { "available": 150, "reserved": 2 },
+  "images": ["..."],
+  "category": "Produce"
+}</pre>
+      <h4>Order (example)</h4>
+      <pre style="background:#f3f6fb;padding:8px;border-radius:4px;border:1px solid #e6eefc;">{
+  "orderId": "ORD-1001",
+  "customerId": "CUST001",
+  "items": [{ "sku":"SKU123","qty":2,"price":1.29 }],
+  "total": 2.58,
+  "status": "NEW",
+  "payment": { "method":"card","status":"pending" }
+}</pre>
+    </section>
+
+    <section id="security" style="margin-top:1rem;">
+      <h2>Security & Compliance</h2>
+      <ul>
+        <li>Enforce strong authentication and role-based access for admin endpoints.</li>
+        <li>Use TLS everywhere and secure cookies (HttpOnly, Secure, SameSite).</li>
+        <li>Rate-limit public APIs and implement WAF rules for common attacks.</li>
+        <li>Log security events and monitor for fraud patterns (velocity, mismatched IP & billing address).</li>
+      </ul>
+    </section>
+
+    <section id="deployment-testing" style="margin-top:1rem;">
+      <h2>Deployment & Testing</h2>
+      <p>Recommendations:</p>
+      <ul>
+        <li>Use separate environments (dev, staging, prod) and test payment flows with sandbox credentials.</li>
+        <li>Automate integration and contract tests for APIs and webhooks.</li>
+        <li>Test failure modes: payment declines, webhook retries, inventory race conditions.</li>
+        <li>Monitor metrics: order rate, cart abandonment, payment failures, latency.</li>
+      </ul>
+    </section>
+
+    <section id="integration-links" style="margin-top:1rem;">
+      <h2>Integration Files</h2>
+      <p>Detailed integration guides and examples are in the integration folder:</p>
+      <ul>
+        <li><a class="inline" href="./integration/">Integration index</a></li>
+        <li><a class="inline" href="./integration/README.md">integration/README.md</a></li>
+        <li><a class="inline" href="./integration/upload-products.md">upload-products.md</a></li>
+        <li><a class="inline" href="./integration/upload-product-images.md">upload-product-images.md</a></li>
+        <li><a class="inline" href="./integration/receive-orders.md">receive-orders.md</a></li>
+        <li><a class="inline" href="./integration/send-orders.md">send-orders.md</a></li>
+        <li><a class="inline" href="./integration/upload-invoices.md">upload-invoices.md</a></li>
+      </ul>
+      <p>Use the Integration index for onboarding steps, API details, and sample payloads.</p>
+    </section>
+
+    <section style="margin-top:1rem;">
+      <h2>Getting Started — Quick Checklist</h2>
+      <ol>
+        <li>Clone the repository and open this documentation.</li>
+        <li>Set up the database and apply initial schema (see Installation docs).</li>
+        <li>Configure payment gateway sandbox credentials and webhook endpoint.</li>
+        <li>Import product catalog and verify inventory counts.</li>
+        <li>Run end-to-end test order through checkout and verify fulfillment.</li>
       </ol>
     </section>
   </main>

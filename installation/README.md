@@ -1,13 +1,13 @@
 
 
 # Application setup
-This document explains how to prepare the environment and install the application. It covers database setup (creating the app_db and applying the initial schema), required software (Java 17 and Node 22), copying application files, creating the invoices folder, and starting/stopping the application. Use the quick verification tests below to validate key steps after installation.
+This document explains how to prepare the environment and install the application. It covers database setup (creating the `ims` and applying the initial schema), required software (Java 17 and Node 22), copying application files, creating the invoices folder, and starting/stopping the application. Use the quick verification tests below to validate key steps after installation.
 
 ## Database Installation
 - Install postgress
-- Create databse with name `app_db`
+- Create databse with name `ims`
 - Download the initial schema and seed script: <a href="./day_00_script.sql" download="day_00_script.sql">Download day_00_script.sql</a>.
-- Run script against 'app_db'
+- Run script against `ims`
 
 ## Application Installation
 
@@ -22,9 +22,9 @@ Install Node version 22
 - To check installation run command `node --version`
 
 Copy application files
-- Copy all files to <Application root> folder. e.g. C:\OnlineApp
-- create a folder `invoices` under application root folder e.g. C:\OnlineApp\invoices
-- Update root folder in `application.yml` with <Application root> under \server\processor\config
+- Copy all files to `<app-root>` folder. e.g. C:\OnlineApp
+- create a folder `invoices` under `<app-root>` folder e.g. C:\OnlineApp\invoices
+- Update root folder in `application.yml` with `<app-root>` under \server\processor\config
 
 Start Application
 - Open command prompt and go to application root folder e.g. C:\OnlineApp

@@ -1,10 +1,6 @@
-title: "Zoom Market Documentation"
-    url: "/integration/index.html"
-  - title: "Integration"
-    url: "/installation/index.html"
-  - title: "Installation"
-    url: "/index.html"
-  - title: "Home"
+title: Zoom Market Documentation
+author: Zoom Market Team
+language: en
 nav_links:
 # site-wide navigation used by the layout
 

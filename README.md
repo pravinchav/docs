@@ -1,3 +1,8 @@
+---
+layout: default
+title: My Page Title
+---
+
 # RetailProcessor API Documentation (Third‑Party Integration)
 
 This folder contains integration guides for the public APIs exposed by RetailProcessor. Each document includes endpoint details, required headers, sample requests (curl), example responses, and integration notes.
@@ -16,4 +21,5 @@ Integration notes
 - For downloads, the API returns Content-Type: application/pdf and Content-Disposition: attachment.
 
 If you need a machine-readable OpenAPI (Swagger) file, request it from the API owner.
+
 

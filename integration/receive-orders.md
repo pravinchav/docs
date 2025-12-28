@@ -14,7 +14,6 @@ Poll RetailProcessor for new or updated orders. Designed for reliable third‑pa
 
 ### Authentication & headers
 
-<!-- blank line ensured before table -->
 | Header | Required | Description |
 |---|:---:|---|
 | Authorization | Yes | `Bearer <JWT>` |

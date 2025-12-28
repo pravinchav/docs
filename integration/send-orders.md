@@ -15,14 +15,12 @@ Push new orders into RetailProcessor for processing and fulfillment.
 
 ### Authentication & headers
 
-<!-- blank line ensured before table -->
 | Header | Required | Description |
 |---|:---:|---|
 | Authorization | Yes | `Bearer <JWT>` |
 | key | Yes | API key |
 | Accept | Recommended | `application/json` |
 
-<!-- blank line ensured after table -->
 
 ### Request body (example)
 ```json

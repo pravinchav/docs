@@ -1,3 +1,8 @@
+---
+layout: default
+title: My Page Title
+---
+
 ### Receive Orders
 
 ### Purpose

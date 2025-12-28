@@ -23,3 +23,88 @@ a.inline{color:var(--accent);text-decoration:none}
 pre{background:#f3f6fb;padding:0.75rem;border-radius:6px;border:1px solid #e6eefc;overflow:auto}
 h1,h2,h3{color:var(--text);margin-top:0}
 
+/* Markdown content scope */
+.markdown-body {
+  font-size: 0.98rem;
+  color: var(--text);
+  line-height: 1.6;
+}
+
+/* Responsive table wrapper — ensure wide tables scroll horizontally */
+.markdown-body .table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 0.75rem 0;
+}
+
+/* Table base styles */
+.markdown-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.5rem 0 1rem;
+  font-size: 0.95rem;
+  min-width: 480px; /* allows horizontal scroll on small screens */
+}
+
+/* Header styling */
+.markdown-body thead th {
+  background: linear-gradient(180deg, rgba(11,95,255,0.09), rgba(11,95,255,0.04));
+  color: #062c65;
+  font-weight: 700;
+  text-align: left;
+  padding: 0.65rem 0.75rem;
+  border-bottom: 2px solid rgba(11,95,255,0.12);
+}
+
+/* Body cells */
+.markdown-body tbody td,
+.markdown-body tfoot td {
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid #eef6ff;
+  vertical-align: top;
+  color: #1f2937;
+}
+
+/* Zebra striping for readability */
+.markdown-body tbody tr:nth-child(even) {
+  background: #fbfdff;
+}
+
+/* Small muted note for missing cells / placeholders */
+.markdown-body td:empty::after {
+  content: "—";
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* Caption styling */
+.markdown-body caption {
+  caption-side: top;
+  text-align: left;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+  color: #0b5fff;
+}
+
+/* Make code inside tables visible and scrollable */
+.markdown-body table code,
+.markdown-body table pre {
+  font-size: 0.85em;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Accessibility: focus outline for keyboard users when tabbing into table rows */
+.markdown-body tbody tr:focus-within {
+  outline: 2px solid rgba(11,95,255,0.14);
+  outline-offset: 2px;
+}
+
+/* Small screens: reduce padding */
+@media (max-width:640px) {
+  .markdown-body thead th,
+  .markdown-body tbody td {
+    padding: 0.5rem 0.6rem;
+  }
+}

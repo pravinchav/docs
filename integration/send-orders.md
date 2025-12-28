@@ -1,8 +1,3 @@
----
-layout: default
-title: "Zoom Market Documentation"
----
-
 
 # Send Orders
 

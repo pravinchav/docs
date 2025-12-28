@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Zoom Market Documentation"
-theme: minima
+theme: Architect
 permalink: /
 nav_links:
   - title: Home

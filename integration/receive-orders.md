@@ -11,20 +11,26 @@ Endpoint
 
 Authentication & headers
 
+<!-- blank line ensured before table -->
 | Header | Required | Description |
 |---|:---:|---|
 | Authorization | Yes | `Bearer <JWT>` |
 | key | Yes | Encrypted company key |
 | Accept | Recommended | `application/json` |
 
+<!-- blank line ensured after table -->
+
 Query parameters
 
+<!-- blank line ensured before table -->
 | Name | Required | Type | Description |
 |---|:---:|---|---|
 | since | No | timestamp | ISO‑8601 — return orders updated after this time |
 | status | No | string | Filter by status (e.g., NEW, PROCESSING, SHIPPED) |
 | limit | No | integer | Max records per page |
 | offset | No | integer | Pagination offset |
+
+<!-- blank line ensured after table -->
 
 Sample curl — basic
 ```bash
@@ -67,6 +73,7 @@ Success response (200)
 
 Errors
 
+<!-- blank line ensured before table -->
 | HTTP | Reason |
 |---:|---|
 | 400 | Malformed parameter (e.g., timestamp) |
@@ -74,6 +81,8 @@ Errors
 | 403 | Invalid/missing `key` |
 | 429 | Rate limit exceeded |
 | 500 | Server error |
+
+<!-- blank line ensured after table -->
 
 Integration notes
 - Use `since` for incremental polling and deduplicate by `orderNo + version`.

@@ -11,7 +11,7 @@ This document contains integration guides for the public APIs exposed by RetailP
 - [Send Invoices](./upload-invoices.md) — How to upload invoice PDF files (multipart), expected metadata, and downstream processing behavior.
 
 Integration notes
-
+- Request application admistrator for API keys and authentication details.
 - All requests require authentication. Include an Authorization header with a bearer token (or as specified by your agreement).
 - Many endpoints expect an encrypted company key header (named `key`) — see each doc for details.
 - For file uploads, use multipart/form-data with proper Content-Type boundaries.

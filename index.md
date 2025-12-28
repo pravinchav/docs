@@ -1,17 +1,6 @@
+# SmartShelf — Grocery App Documentation
 
-
-# Zoom Market — Documentation
-
-**Zoom Market**  
-Documentation — official guides, integration details, and developer reference.
-
-Navigation: {% for item in page.nav_links %}[{{ item.title }}]({{ item.url | relative_url }}){% if forloop.last == false %} · {% endif %}{% endfor %}
-
----
-
-# Zoom Market — Grocery App Documentation
-
-Comprehensive documentation for the Zoom Market grocery application: storefront features, checkout flow, payment gateway integration, APIs, admin tools, and operational guidance for developers and integrators.
+Comprehensive documentation for the SmartShelf grocery application: storefront features, checkout flow, payment gateway integration, APIs, admin tools, and operational guidance for developers and integrators.
 
 ## Table of Contents
 
@@ -31,7 +20,7 @@ Comprehensive documentation for the Zoom Market grocery application: storefront 
 
 ## Overview
 
-Zoom Market is a full-featured grocery storefront offering browsing, search, cart, checkout, payment processing, order tracking, returns, and administrative tools. This document describes end-user flows, integration points for payments and third-party systems, and developer-facing APIs and webhooks.
+SmartShelf is a full-featured grocery storefront offering browsing, search, cart, checkout, payment processing, order tracking, returns, and administrative tools. This document describes end-user flows, integration points for payments and third-party systems, and developer-facing APIs and webhooks.
 
 ## User Journeys
 

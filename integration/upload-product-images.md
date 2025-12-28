@@ -3,52 +3,58 @@ layout: default
 title: My Page Title
 ---
 
-# Upload Product Images
+### Upload Product Images
 
-Version: 1.0 | Last updated: 2025-11-01
-
-Purpose
+### Purpose
 Upload one or more product images when images are provided separately from the product file.
 
-Endpoint
+### Endpoint
 - POST /api/external/uploadProductImages  
 - Content-Type: multipart/form-data
 
-Authentication & headers
+### Authentication & headers
 
-| Header | Required | Description |
-|---|:---:|---|
-| Authorization | Yes | `Bearer <JWT>` |
-| key | Yes | Encrypted company key |
-| Accept | Recommended | `application/json` |
+| Header | Required | Description        |
+|---|:---:|--------------------|
+| Authorization | Yes | `Bearer <JWT>`     |
+| key | Yes | API key            |
+| Accept | Recommended | `application/jpeg` |
 
-Form fields
+### Form fields
 
 | Field | Required | Type | Description |
 |---|:---:|---|---|
 | images | Yes | file[] | Image files (JPEG/PNG) |
-| mapping | No | string | JSON array mapping `file` → `sku`, e.g. `[{"file":"img.jpg","sku":"SKU123"}]` |
 
-Sample curl
+### Sample curl
 ```bash
 curl -v -X POST "https://api.example.com/api/external/uploadProductImages" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   -H "key: ENCRYPTED_COMPANY_KEY" \
   -F "images=@/path/to/image1.jpg" \
   -F "images=@/path/to/image2.png" \
-  -F 'mapping=[{"file":"image1.jpg","sku":"SKU123"}]'
 ```
 
-Success response (200)
+### Success response (200)
 ```json
 {
-  "status": "success",
-  "uploaded": 2,
-  "message": "Images stored and mapped to products"
+  "status": 200,
+  "data": [
+    "C:\\OnlineApp\\server\\html\\browser\\assets\\site-img\\10001\\banner-1.jpg",
+    "C:\\OnlineApp\\server\\html\\browser\\assets\\site-img\\10001\\banner-2.jpg",
+    "C:\\OnlineApp\\server\\html\\browser\\assets\\site-img\\10001\\banner-3.jpg",
+    "C:\\OnlineApp\\server\\html\\browser\\assets\\site-img\\10001\\default.jpg",
+    "C:\\OnlineApp\\server\\html\\browser\\assets\\site-img\\10001\\dummy.jpg",
+    "C:\\OnlineApp\\server\\html\\browser\\assets\\site-img\\10001\\dummy2.jpg",
+    "C:\\OnlineApp\\server\\html\\browser\\assets\\site-img\\10001\\dummy3.jpg",
+    "C:\\OnlineApp\\server\\html\\browser\\assets\\site-img\\10001\\home-page.jpg",
+    "C:\\OnlineApp\\server\\html\\browser\\assets\\site-img\\10001\\site-logo.jpg",
+    "C:\\OnlineApp\\server\\html\\browser\\assets\\site-img\\10001\\wall.jpg"
+  ]
 }
 ```
 
-Errors & tips
+### Errors & tips
 
 | HTTP | Reason / Recommendation |
 |---:|---|
@@ -56,6 +62,6 @@ Errors & tips
 | 413 | Payload too large — split or chunk uploads |
 | 500 | Storage error — retry with backoff |
 
-Integration tips
+### Integration tips
 - Prefer unique filenames (SKU prefix or UUID) to prevent collisions.
 - Always verify server filename normalization before relying on exact names.
